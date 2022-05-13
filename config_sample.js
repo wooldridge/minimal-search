@@ -1,112 +1,56 @@
-var config = {};
+const config = {};
 
-config.host = "localhost";
-
-config.database = {
-  "name": "ml-bitemporal-example",
-  "port": 8554
+config.project = {
+  name: "minimal-search"
 };
 
+config.path = "/PATH/TO/minimal-search/"; // include trailing "/"
+
 config.auth = {
-  user: 'ML_USER',
-  pass: 'ML_PASSWORD',
+  user: 'USERNAME',
+  pass: 'PASSWORD',
   sendImmediately: false
 };
 
-config.databaseSetup = {
-  "database-name": config.database.name,
-  "range-element-index": [
-    {
-      "collation": "",
-      "invalid-values": "reject",
-      "localname": "valStart",
-      "namespace-uri": "",
-      "range-value-positions": false,
-      "scalar-type": "dateTime"
-    },
-    {
-      "collation": "",
-      "invalid-values": "reject",
-      "localname": "valEnd",
-      "namespace-uri": "",
-      "range-value-positions": false,
-      "scalar-type": "dateTime"
-    },
-    {
-      "collation": "",
-      "invalid-values": "reject",
-      "localname": "sysStart",
-      "namespace-uri": "",
-      "range-value-positions": false,
-      "scalar-type": "dateTime"
-    },
-    {
-      "collation": "",
-      "invalid-values": "reject",
-      "localname": "sysEnd",
-      "namespace-uri": "",
-      "range-value-positions": false,
-      "scalar-type": "dateTime"
-    }
-  ]
+config.host = "localhost";
+
+config.databases = {
+  content: {
+    name: config.project.name + "-content"
+  },
+  modules: {
+    name: config.project.name + "-modules"
+  },
 };
 
-config.forestSetup = {
-  "forest-name": config.database.name + '-1',
-  "database": config.database.name
-}
-
-config.restSetup = {
+config.rest = {
   "rest-api": {
-    "name": config.database.name + "-rest",
-    "database": config.database.name,
-    "modules-database": config.database.name + "-modules",
-    "port": config.database.port,
+    name: config.project.name + "-rest",
+    database: config.databases.content.name,
+    "modules-database": config.databases.modules.name,
+    port: 8099,
     "error-format": "json"
   }
+};
+
+config.xdbc = {
+  "server-name": config.project.name + "-xdbc",
+  "server-type": "xdbc",
+  "group-name": "Default",
+  "content-database": config.databases.content.name,
+  root: "/",
+  port: 8006
+};
+
+config.user = {
+  "user-name": "minimal-search-user", 
+  "password": "password",
+  "role": [ "application-user-role", "hadoop-user-all" ] 
 }
 
-config.axisValidSetup = {
-  "axis-name": "axisValid",
-  "axis-start": {
-    "element-reference": {
-      "namespace-uri": "",
-      "localname": "valStart"
-    }
-  },
-  "axis-end": {
-    "element-reference": {
-      "namespace-uri": "",
-      "localname": "valEnd"
-    }
-  }
-};
+config.entityType = "person";
 
-config.axisSystemSetup = {
-  "axis-name": "axisSystem",
-  "axis-start": {
-    "element-reference": {
-      "namespace-uri": "",
-      "localname": "sysStart"
-    }
-  },
-  "axis-end": {
-    "element-reference": {
-      "namespace-uri": "",
-      "localname": "sysEnd"
-    }
-  }
-};
-
-config.collectionSetup = {
-  "collection-name": "temporalCollection",
-  "system-axis": "axisSystem",
-  "valid-axis": "axisValid"
-};
-
-config.lsqtSetup = {
-  "lsqt-enabled": true
-};
+config.entityLabel = "Person";
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
   module.exports = config;
