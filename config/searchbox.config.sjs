@@ -5,7 +5,7 @@ const searchboxConfig  = {
         "items": [
             {
                 "label": "All Entities",
-                "value": [%%ENTITYTYPE%%],
+                "value": ["%%ENTITYTYPE%%"],
                 "default": true
             },
             {

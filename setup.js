@@ -229,7 +229,7 @@ const loadConfig = async () => {
   let buffer;
   buffer = fs.readFileSync(configPath + currFile);
 
-  let bufferString = buffer.toString().replace("%%ENTITYTYPE%%", config.entityType).replace("%%ENTITYLABEL%%", config.entityLabel);
+  let bufferString = buffer.toString().replace(/%%ENTITYTYPE%%/g, config.entityType).replace(/%%ENTITYLABEL%%/g, config.entityLabel);
 
   let url = 'http://' + config.host + ':' + config.rest["rest-api"].port + '/v1/documents';
   let db = '?database=' + config.databases.modules.name;
