@@ -7,7 +7,7 @@ const handleError = (err) => {
   if (err.error &&
       err.error.errorResponse &&
       err.error.errorResponse.message) {
-    console.log('Error: ' + err.error.errorResponse.message);
+    console.log('Error: '.red + err.error.errorResponse.message.red);
   } else {
     console.log(JSON.stringify(err, null, 2));
   }
@@ -114,6 +114,25 @@ const createXDBC = async () => {
   }
 }
 
+const createRole = async () => {
+  var options = {
+    method: 'POST',
+    uri: 'http://' + config.host + ':8002/manage/v2/roles?format=json',
+    body: config.role,
+    json: true,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    auth: config.auth
+  };
+  try {
+    const response = await rp(options);
+    console.log('Role created: '.green + config.role["role-name"]);
+  } catch (error) {
+    handleError(error);
+  }
+}
+
 const createUser = async () => {
   var options = {
     method: 'POST',
@@ -133,7 +152,7 @@ const createUser = async () => {
   }
 }
 
-let inputPath = config.path + 'input/'
+let inputPath = config.path + 'input2/'
     recordFiles = fs.readdirSync(inputPath),
     count = 0;
 
@@ -147,7 +166,8 @@ const loadRecords = async () => {
   let db = '?database=' + config.databases.content.name;
   let uri = '&uri=/' + currFile;
   let coll = '&collection=' + config.entityType;
-  let perms = "&perm:rest-writer=read&perm:rest-writer=update&perm:rest-reader=update&perm:rest-admin=read&perm:rest-admin=update&perm:rest-admin=execute&perm:harmonized-reader=read&perm:harmonized-updater=update";
+  // let perms = "&perm:rest-writer=read&perm:rest-writer=update&perm:rest-reader=update&perm:rest-admin=read&perm:rest-admin=update&perm:rest-admin=execute&perm:harmonized-reader=read&perm:harmonized-updater=update";
+  let perms = "&perm:rest-writer=read";
 
   const options = {
     method: 'PUT',
@@ -269,9 +289,9 @@ const start = async () => {
   await createUser();
   console.log('Loading records...'.green);
   await loadRecords();
-  await loadSearchOptions();
-  await loadSearchLib();
-  await loadConfig();
+  // await loadSearchOptions();
+  // await loadSearchLib();
+  // await loadConfig();
   console.log(
     '                            SETUP FINISHED                            '.gray.bold.inverse
   );
