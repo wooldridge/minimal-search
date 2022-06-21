@@ -73,6 +73,7 @@ config.user = {
   "password": "password",
   "role": [ "minimal-search-role", "rest-admin", "hadoop-user-all" ] 
 }
+
 config.entityType = "person";
 
 config.entityLabel = "Person";
